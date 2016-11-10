@@ -13,24 +13,21 @@ main:
 	bl		InitFrameBuffer
 	bl		Init_SNES
 	
-	
-	//display and run the menu
-	bl		Menu_Display
-	bl		Menu_Run
+	mainLoop:
+		
+		//display and run the menu
+		bl		Menu_Display
+		bl		Menu_Run
     
-    //check if quite game was selected
-    cmp		r0, #0
-    bleq	Quit
+		//check if quite game was selected
+		cmp		r0, #0
+		bleq	Quit
     
-    //otherwise, start the game
-    //bl		Game_Display
-    //bl		Game_Start
+		//otherwise, start the game
+		//bl		Game_Display
+		//bl		Game_Start
     
-    
-    //display and run the menu
-	bl		Menu_Display
-	bl		Menu_Run
-    
+		b mainLoop
     
     
 /* Quit function
