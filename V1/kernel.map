@@ -25,7 +25,7 @@ LOAD gpio.o
                 0x00008000                _start
  .init          0x00008004        0x0 build/snes.o
 
-.data           0x00009080   0x310d14
+.data           0x00009080   0x206c10
  *(.data)
  .data          0x00009080        0x0 build/main.o
  .data          0x00009080        0x0 build/jtag.o
@@ -34,106 +34,101 @@ LOAD gpio.o
  .data          0x000090f0    0x7e008 build/img_game.o
                 0x000090f0                Board
  .data          0x000870f8        0x0 build/snes.o
- .data          0x000870f8   0x28e49c build/img_menu.o
+ .data          0x000870f8   0x184398 build/img_menu.o
                 0x000870f8                Main_Menu
-                0x00207100                Main_Start
-                0x0022e208                Main_Quit
-                0x00255310                Pause_Menu
-                0x002b7478                Pause_Start
-                0x002e4340                Pause_Quit
-                0x00311204                Block_Start
-                0x003133cc                Block_Quit
- .data          0x00315594     0x4800 build/img_blocks.o
-                0x00315594                Cyan_Block
-                0x00315d94                Blue_Block
-                0x00316594                Green_Block
-                0x00316d94                Orange_Block
-                0x00317594                Red_Block
-                0x00317d94                Purple_Block
-                0x00318594                Yellow_Block
-                0x00318d94                Wall_Block
-                0x00319594                Back_Block
- .data          0x00319d94        0x0 build/screen.o
- .data          0x00319d94        0x0 build/utilities.o
- .data          0x00319d94        0x0 build/menu.o
- .data          0x00319d94        0x0 uart.o
- .data          0x00319d94        0x0 gpio.o
+                0x00207100                Block_Start
+                0x002092c8                Block_Quit
+ .data          0x0020b490     0x4800 build/img_blocks.o
+                0x0020b490                Cyan_Block
+                0x0020bc90                Blue_Block
+                0x0020c490                Green_Block
+                0x0020cc90                Orange_Block
+                0x0020d490                Red_Block
+                0x0020dc90                Purple_Block
+                0x0020e490                Yellow_Block
+                0x0020ec90                Wall_Block
+                0x0020f490                Back_Block
+ .data          0x0020fc90        0x0 build/screen.o
+ .data          0x0020fc90        0x0 build/utilities.o
+ .data          0x0020fc90        0x0 build/menu.o
+ .data          0x0020fc90        0x0 uart.o
+ .data          0x0020fc90        0x0 gpio.o
  *.c.o(*)
 
-.igot.plt       0x00319d94        0x0
+.igot.plt       0x0020fc90        0x0
  .igot.plt      0x00000000        0x0 build/main.o
 
-.text           0x00319d94      0x7f0
+.text           0x0020fc90      0x7f0
  *.c.o(.text)
  *(.text)
- .text          0x00319d94       0x30 build/main.o
-                0x00319db8                Quit
- .text          0x00319dc4       0x8c build/jtag.o
-                0x00319dc4                EnableJTAG
- .text          0x00319e50       0x80 build/framebuffer.o
-                0x00319e50                InitFrameBuffer
- .text          0x00319ed0        0x0 build/img_game.o
- .text          0x00319ed0      0x1bc build/snes.o
-                0x00319ed0                Get_SNES
-                0x00319f08                Init_SNES
- .text          0x0031a08c        0x0 build/img_menu.o
- .text          0x0031a08c        0x0 build/img_blocks.o
- .text          0x0031a08c      0x1c0 build/screen.o
-                0x0031a08c                Draw_Pixel
-                0x0031a0ac                Draw_LineH
-                0x0031a0f0                Draw_Box
-                0x0031a13c                Draw_Image
-                0x0031a1a0                Draw_Block
-                0x0031a220                Clear_Screen
- .text          0x0031a24c       0x28 build/utilities.o
-                0x0031a24c                Wait
- .text          0x0031a274       0x80 build/menu.o
-                0x0031a274                Menu_Display
-                0x0031a288                Menu_Run
- .text          0x0031a2f4      0x1b8 uart.o
-                0x0031a2f4                InitUART
-                0x0031a3b4                PutCharUART
-                0x0031a3d0                GetCharUART
-                0x0031a3ec                WriteStringUART
-                0x0031a41c                ReadLineUART
- .text          0x0031a4ac       0xd8 gpio.o
-                0x0031a4ac                GetGpioAddress
-                0x0031a4b4                SetGpioFunction
-                0x0031a500                SetGpio
-                0x0031a53c                GetGpio
+ .text          0x0020fc90       0x30 build/main.o
+                0x0020fcb4                Quit
+ .text          0x0020fcc0       0x8c build/jtag.o
+                0x0020fcc0                EnableJTAG
+ .text          0x0020fd4c       0x80 build/framebuffer.o
+                0x0020fd4c                InitFrameBuffer
+ .text          0x0020fdcc        0x0 build/img_game.o
+ .text          0x0020fdcc      0x1bc build/snes.o
+                0x0020fdcc                Get_SNES
+                0x0020fe04                Init_SNES
+ .text          0x0020ff88        0x0 build/img_menu.o
+ .text          0x0020ff88        0x0 build/img_blocks.o
+ .text          0x0020ff88      0x1c0 build/screen.o
+                0x0020ff88                Draw_Pixel
+                0x0020ffa8                Draw_LineH
+                0x0020ffec                Draw_Box
+                0x00210038                Draw_Image
+                0x0021009c                Draw_Block
+                0x0021011c                Clear_Screen
+ .text          0x00210148       0x28 build/utilities.o
+                0x00210148                Wait
+ .text          0x00210170       0x80 build/menu.o
+                0x00210170                Menu_Display
+                0x00210184                Menu_Run
+ .text          0x002101f0      0x1b8 uart.o
+                0x002101f0                InitUART
+                0x002102b0                PutCharUART
+                0x002102cc                GetCharUART
+                0x002102e8                WriteStringUART
+                0x00210318                ReadLineUART
+ .text          0x002103a8       0xd8 gpio.o
+                0x002103a8                GetGpioAddress
+                0x002103b0                SetGpioFunction
+                0x002103fc                SetGpio
+                0x00210438                GetGpio
 OUTPUT(build/output.elf elf32-littlearm)
 
-.glue_7         0x0031a584        0x0
+.glue_7         0x00210480        0x0
  .glue_7        0x00000000        0x0 linker stubs
 
-.glue_7t        0x0031a584        0x0
+.glue_7t        0x00210480        0x0
  .glue_7t       0x00000000        0x0 linker stubs
 
-.vfp11_veneer   0x0031a584        0x0
+.vfp11_veneer   0x00210480        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x0031a584        0x0
+.v4_bx          0x00210480        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x0031a584        0x0
+.iplt           0x00210480        0x0
  .iplt          0x00000000        0x0 build/main.o
 
-.rel.dyn        0x0031a584        0x0
+.rel.dyn        0x00210480        0x0
  .rel.iplt      0x00000000        0x0 build/main.o
 
-.bss            0x0031a584        0x0
- .bss           0x0031a584        0x0 build/main.o
- .bss           0x0031a584        0x0 build/jtag.o
- .bss           0x0031a584        0x0 build/framebuffer.o
- .bss           0x0031a584        0x0 build/img_game.o
- .bss           0x0031a584        0x0 build/snes.o
- .bss           0x0031a584        0x0 build/img_menu.o
- .bss           0x0031a584        0x0 build/img_blocks.o
- .bss           0x0031a584        0x0 build/screen.o
- .bss           0x0031a584        0x0 build/utilities.o
- .bss           0x0031a584        0x0 build/menu.o
- .bss           0x0031a584        0x0 uart.o
- .bss           0x0031a584        0x0 gpio.o
+.bss            0x00210480        0x0
+ .bss           0x00210480        0x0 build/main.o
+ .bss           0x00210480        0x0 build/jtag.o
+ .bss           0x00210480        0x0 build/framebuffer.o
+ .bss           0x00210480        0x0 build/img_game.o
+ .bss           0x00210480        0x0 build/snes.o
+ .bss           0x00210480        0x0 build/img_menu.o
+ .bss           0x00210480        0x0 build/img_blocks.o
+ .bss           0x00210480        0x0 build/screen.o
+ .bss           0x00210480        0x0 build/utilities.o
+ .bss           0x00210480        0x0 build/menu.o
+ .bss           0x00210480        0x0 uart.o
+ .bss           0x00210480        0x0 gpio.o
 
 .ARM.attributes
                 0x00000000       0x29
