@@ -27,6 +27,9 @@ Spawn_Tetromino:
 
 
 	push	{r4-r10, r14}
+	
+	//call random number generator to get a random tetromino
+	bl		Get_Random_Tetromino
 
 	//switch statement to branch to each case to initialize tetromino in spawn area
 	cmp		r0, #0
