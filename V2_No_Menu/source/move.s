@@ -286,6 +286,7 @@ Move_Left:
 	//set the tetromino back out to the virtual board
 	bl		Set_Tetromino
 	bl		Set_Tet_Screen
+	
 
 	pop		{r4-r10, r14}
 	bx		lr

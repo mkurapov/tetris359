@@ -22,7 +22,7 @@ Spawn_Tetromino:
 	coord	.req r4
 	value	.req r5
 	index	.req r6
-	succes	.req r7
+	result	.req r7
 	varAdd	.req r9
 
 
@@ -30,32 +30,49 @@ Spawn_Tetromino:
 	
 	//call random number generator to get a random tetromino
 	bl		Get_Random_Tetromino
+	mov		r4, r0
 
 	//switch statement to branch to each case to initialize tetromino in spawn area
-	cmp		r0, #0
-	bleq	Spawn_I
+	cmp		r4, #0
+	blle	Spawn_I
+	cmp		r4, #0
+	ble		startSpawn
 
-	cmp		r0, #1
+	cmp		r4, #1
 	bleq	Spawn_J
+	cmp		r4, #1
+	beq		startSpawn
 
-	cmp		r0, #2
+	cmp		r4, #2
 	bleq	Spawn_L
+	cmp		r4, #2
+	beq		startSpawn
 
-	cmp		r0, #3
+	cmp		r4, #3
 	bleq	Spawn_O
+	cmp		r4, #3
+	beq		startSpawn
 
-	cmp		r0, #4
+	cmp		r4, #4
 	bleq	Spawn_S
+	cmp		r4, #4
+	beq		startSpawn
 
-	cmp		r0, #5
+	cmp		r4, #5
 	bleq	Spawn_T
+	cmp		r4, #5
+	beq		startSpawn
 
-	cmp		r0, #6
-	bleq	Spawn_Z
+	cmp		r4, #6
+	blge	Spawn_Z
+	cmp		r4, #6
+	bge		startSpawn
 
+	startSpawn:
+	
 	//set up loop index
 	mov		index, #0
-	mov		succes, #1	
+	mov		result, #1	
 	
 	spawnLoop:
 	
@@ -75,7 +92,7 @@ Spawn_Tetromino:
 
 	//check if the index is still 0, in which case the game has ended, return 0 for fail
 	cmp		index, #0
-	moveq	succes, #0
+	moveq	result, #0
 	beq		endSpawn
 	
 	//update spawn flag
@@ -92,13 +109,13 @@ Spawn_Tetromino:
 	endSpawn:
 	
 	//set the result to return
-	mov		r0, succes
+	mov		r0, result
 	
 	.unreq	xCoord
 	.unreq	yCoord
 	.unreq	coord
 	.unreq	index
-	.unreq	succes
+	.unreq	result
 	.unreq	value
 	.unreq	varAdd
 	
@@ -174,7 +191,7 @@ Spawn_J:
 	ldr		coord, =First
 		
 	//set up first
-	mov		value, #6
+	mov		value, #4
 	strb	value, [coord], #1
 	mov		value, #0
 	strb	value, [coord], #1
@@ -230,25 +247,25 @@ Spawn_L:
 	//set up first
 	mov		value, #4
 	strb	value, [coord], #1
-	mov		value, #0
+	mov		value, #1
 	strb	value, [coord], #1
 	
 	//set up second
 	mov		value, #5
 	strb	value, [coord], #1
-	mov		value, #0
+	mov		value, #1
 	strb	value, [coord], #1
 		
 	//set up third
 	mov		value, #6
 	strb	value, [coord], #1
-	mov		value, #0
+	mov		value, #1
 	strb	value, [coord], #1
 		
 	//set up fourth
-	mov		value, #4
+	mov		value, #6
 	strb	value, [coord], #1
-	mov		value, #1
+	mov		value, #0
 	strb	value, [coord], #1
 	
 	//set the type of the tetromino
