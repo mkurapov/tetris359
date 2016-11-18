@@ -72,105 +72,105 @@ LOAD gpio.o
 .igot.plt       0x0008ba1c        0x0
  .igot.plt      0x00000000        0x0 build/main.o
 
-.text           0x0008ba1c     0x1258
+.text           0x0008ba1c     0x1254
  *.c.o(.text)
  *(.text)
- .text          0x0008ba1c       0x28 build/main.o
+ .text          0x0008ba1c       0x24 build/main.o
                 0x0008ba38                Quit
- .text          0x0008ba44       0x78 build/score.o
-                0x0008ba44                Score_Increment
-                0x0008ba60                Score_Update
- .text          0x0008babc       0x8c build/jtag.o
-                0x0008babc                EnableJTAG
- .text          0x0008bb48       0x80 build/framebuffer.o
-                0x0008bb48                InitFrameBuffer
- .text          0x0008bbc8      0x1a0 build/move.o
-                0x0008bbc8                Move_Down
-                0x0008bc60                Move_Right
-                0x0008bce0                Move_Left
- .text          0x0008bd68        0x0 build/img_game.o
- .text          0x0008bd68      0x1bc build/snes.o
-                0x0008bd68                Get_SNES
-                0x0008bda0                Init_SNES
- .text          0x0008bf24      0x364 build/spawn.o
-                0x0008bf24                Spawn_Tetromino
- .text          0x0008c288      0x1b4 build/clear.o
-                0x0008c288                Clear_Rows
-                0x0008c2ec                Check_Rows
-                0x0008c360                Move_Down_Row
-                0x0008c3b0                Clear_Row
-                0x0008c3f8                Clear_Move
- .text          0x0008c43c        0x0 build/img_blocks.o
- .text          0x0008c43c      0x1cc build/screen.o
-                0x0008c43c                Draw_Pixel
-                0x0008c45c                Draw_LineH
-                0x0008c4a0                Draw_Box
-                0x0008c4ec                Draw_Image
-                0x0008c550                Draw_Block
-                0x0008c5dc                Clear_Screen
- .text          0x0008c608      0x170 build/utilities.o
-                0x0008c608                Wait
-                0x0008c62c                Random_Number_Generator
-                0x0008c654                Get_Random_Tetromino
-                0x0008c680                Get_Random_Y
-                0x0008c6ac                Get_Random_X
-                0x0008c6d8                ASCII_To_Address
- .text          0x0008c778      0x26c build/game.o
-                0x0008c778                Game_Display
-                0x0008c78c                Game_Test
-                0x0008c814                Set_Tetromino
-                0x0008c860                Clear_Tetromino
-                0x0008c8a8                Set_Tet_Screen
-                0x0008c8f4                Clear_Tet_Screen
-                0x0008c93c                Redraw_Board
-                0x0008c99c                Check_Empty
- .text          0x0008c9e4      0x1b8 uart.o
-                0x0008c9e4                InitUART
-                0x0008caa4                PutCharUART
-                0x0008cac0                GetCharUART
-                0x0008cadc                WriteStringUART
-                0x0008cb0c                ReadLineUART
- .text          0x0008cb9c       0xd8 gpio.o
-                0x0008cb9c                GetGpioAddress
-                0x0008cba4                SetGpioFunction
-                0x0008cbf0                SetGpio
-                0x0008cc2c                GetGpio
+ .text          0x0008ba40       0x78 build/score.o
+                0x0008ba40                Score_Increment
+                0x0008ba5c                Score_Update
+ .text          0x0008bab8       0x8c build/jtag.o
+                0x0008bab8                EnableJTAG
+ .text          0x0008bb44       0x80 build/framebuffer.o
+                0x0008bb44                InitFrameBuffer
+ .text          0x0008bbc4      0x1a0 build/move.o
+                0x0008bbc4                Move_Down
+                0x0008bc5c                Move_Right
+                0x0008bcdc                Move_Left
+ .text          0x0008bd64        0x0 build/img_game.o
+ .text          0x0008bd64      0x1bc build/snes.o
+                0x0008bd64                Get_SNES
+                0x0008bd9c                Init_SNES
+ .text          0x0008bf20      0x364 build/spawn.o
+                0x0008bf20                Spawn_Tetromino
+ .text          0x0008c284      0x1b4 build/clear.o
+                0x0008c284                Clear_Rows
+                0x0008c2e8                Check_Rows
+                0x0008c35c                Move_Down_Row
+                0x0008c3ac                Clear_Row
+                0x0008c3f4                Clear_Move
+ .text          0x0008c438        0x0 build/img_blocks.o
+ .text          0x0008c438      0x1cc build/screen.o
+                0x0008c438                Draw_Pixel
+                0x0008c458                Draw_LineH
+                0x0008c49c                Draw_Box
+                0x0008c4e8                Draw_Image
+                0x0008c54c                Draw_Block
+                0x0008c5d8                Clear_Screen
+ .text          0x0008c604      0x170 build/utilities.o
+                0x0008c604                Wait
+                0x0008c628                Random_Number_Generator
+                0x0008c650                Get_Random_Tetromino
+                0x0008c67c                Get_Random_Y
+                0x0008c6a8                Get_Random_X
+                0x0008c6d4                ASCII_To_Address
+ .text          0x0008c774      0x26c build/game.o
+                0x0008c774                Game_Display
+                0x0008c788                Game_Test
+                0x0008c810                Set_Tetromino
+                0x0008c85c                Clear_Tetromino
+                0x0008c8a4                Set_Tet_Screen
+                0x0008c8f0                Clear_Tet_Screen
+                0x0008c938                Redraw_Board
+                0x0008c998                Check_Empty
+ .text          0x0008c9e0      0x1b8 uart.o
+                0x0008c9e0                InitUART
+                0x0008caa0                PutCharUART
+                0x0008cabc                GetCharUART
+                0x0008cad8                WriteStringUART
+                0x0008cb08                ReadLineUART
+ .text          0x0008cb98       0xd8 gpio.o
+                0x0008cb98                GetGpioAddress
+                0x0008cba0                SetGpioFunction
+                0x0008cbec                SetGpio
+                0x0008cc28                GetGpio
 OUTPUT(build/output.elf elf32-littlearm)
 
-.glue_7         0x0008cc74        0x0
+.glue_7         0x0008cc70        0x0
  .glue_7        0x00000000        0x0 linker stubs
 
-.glue_7t        0x0008cc74        0x0
+.glue_7t        0x0008cc70        0x0
  .glue_7t       0x00000000        0x0 linker stubs
 
-.vfp11_veneer   0x0008cc74        0x0
+.vfp11_veneer   0x0008cc70        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x0008cc74        0x0
+.v4_bx          0x0008cc70        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x0008cc74        0x0
+.iplt           0x0008cc70        0x0
  .iplt          0x00000000        0x0 build/main.o
 
-.rel.dyn        0x0008cc74        0x0
+.rel.dyn        0x0008cc70        0x0
  .rel.iplt      0x00000000        0x0 build/main.o
 
-.bss            0x0008cc74        0x0
- .bss           0x0008cc74        0x0 build/main.o
- .bss           0x0008cc74        0x0 build/score.o
- .bss           0x0008cc74        0x0 build/jtag.o
- .bss           0x0008cc74        0x0 build/framebuffer.o
- .bss           0x0008cc74        0x0 build/move.o
- .bss           0x0008cc74        0x0 build/img_game.o
- .bss           0x0008cc74        0x0 build/snes.o
- .bss           0x0008cc74        0x0 build/spawn.o
- .bss           0x0008cc74        0x0 build/clear.o
- .bss           0x0008cc74        0x0 build/img_blocks.o
- .bss           0x0008cc74        0x0 build/screen.o
- .bss           0x0008cc74        0x0 build/utilities.o
- .bss           0x0008cc74        0x0 build/game.o
- .bss           0x0008cc74        0x0 uart.o
- .bss           0x0008cc74        0x0 gpio.o
+.bss            0x0008cc70        0x0
+ .bss           0x0008cc70        0x0 build/main.o
+ .bss           0x0008cc70        0x0 build/score.o
+ .bss           0x0008cc70        0x0 build/jtag.o
+ .bss           0x0008cc70        0x0 build/framebuffer.o
+ .bss           0x0008cc70        0x0 build/move.o
+ .bss           0x0008cc70        0x0 build/img_game.o
+ .bss           0x0008cc70        0x0 build/snes.o
+ .bss           0x0008cc70        0x0 build/spawn.o
+ .bss           0x0008cc70        0x0 build/clear.o
+ .bss           0x0008cc70        0x0 build/img_blocks.o
+ .bss           0x0008cc70        0x0 build/screen.o
+ .bss           0x0008cc70        0x0 build/utilities.o
+ .bss           0x0008cc70        0x0 build/game.o
+ .bss           0x0008cc70        0x0 uart.o
+ .bss           0x0008cc70        0x0 gpio.o
 
 .ARM.attributes
                 0x00000000       0x29
@@ -205,20 +205,20 @@ OUTPUT(build/output.elf elf32-littlearm)
  .ARM.attributes
                 0x0000023e       0x29 gpio.o
 
-.debug_line     0x00000000      0x883
- .debug_line    0x00000000       0x57 build/main.o
- .debug_line    0x00000057       0x62 build/score.o
- .debug_line    0x000000b9       0x61 build/jtag.o
- .debug_line    0x0000011a       0x68 build/framebuffer.o
- .debug_line    0x00000182       0xab build/move.o
- .debug_line    0x0000022d       0xc1 build/snes.o
- .debug_line    0x000002ee      0x12d build/spawn.o
- .debug_line    0x0000041b       0xbd build/clear.o
- .debug_line    0x000004d8       0xc9 build/screen.o
- .debug_line    0x000005a1       0xaf build/utilities.o
- .debug_line    0x00000650      0x103 build/game.o
- .debug_line    0x00000753       0xb7 uart.o
- .debug_line    0x0000080a       0x79 gpio.o
+.debug_line     0x00000000      0x882
+ .debug_line    0x00000000       0x56 build/main.o
+ .debug_line    0x00000056       0x62 build/score.o
+ .debug_line    0x000000b8       0x61 build/jtag.o
+ .debug_line    0x00000119       0x68 build/framebuffer.o
+ .debug_line    0x00000181       0xab build/move.o
+ .debug_line    0x0000022c       0xc1 build/snes.o
+ .debug_line    0x000002ed      0x12d build/spawn.o
+ .debug_line    0x0000041a       0xbd build/clear.o
+ .debug_line    0x000004d7       0xc9 build/screen.o
+ .debug_line    0x000005a0       0xaf build/utilities.o
+ .debug_line    0x0000064f      0x103 build/game.o
+ .debug_line    0x00000752       0xb7 uart.o
+ .debug_line    0x00000809       0x79 gpio.o
 
 .debug_info     0x00000000      0x55a
  .debug_info    0x00000000       0x65 build/main.o

@@ -64,9 +64,11 @@ Spawn_Tetromino:
 	beq		startSpawn
 
 	cmp		r4, #6
-	blge	Spawn_Z
+	bleq	Spawn_Z
 	cmp		r4, #6
-	bge		startSpawn
+	beq		startSpawn
+	
+	bl		spawn_Imp
 
 	startSpawn:
 	
@@ -121,6 +123,62 @@ Spawn_Tetromino:
 	
 	pop		{r4-r10, r14}
 	bx		lr
+
+/* Spawn_Imp function
+ *  spawns an impossible shape for testing
+ */
+Spawn_Imp:
+
+	coord	.req r4
+	value	.req r5
+	typAdd	.req r6
+	type	.req r7
+
+	push	{r4-r10, r14}
+
+	ldr		coord, =First
+		
+	//set up first
+	mov		value, #4
+	strb	value, [coord], #1
+	mov		value, #1
+	strb	value, [coord], #1
+	
+	//set up second
+	mov		value, #5
+	strb	value, [coord], #1
+	mov		value, #1
+	strb	value, [coord], #1
+		
+	//set up third
+	mov		value, #6
+	strb	value, [coord], #1
+	mov		value, #0
+	strb	value, [coord], #1
+		
+	//set up fourth
+	mov		value, #7
+	strb	value, [coord], #1
+	mov		value, #0
+	strb	value, [coord], #1
+	
+	//set the type of the tetromino
+	ldr		typAdd, =Type
+	mov		type, #'C'
+	strb	type, [typAdd]
+
+	.unreq	coord
+	.unreq	value
+	.unreq	typAdd
+	.unreq	type
+
+	pop		{r4-r10, r14}
+	bx		lr
+
+
+
+
+
 
 
 

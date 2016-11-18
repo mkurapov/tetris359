@@ -520,7 +520,7 @@ Spawn_Flag:
 //variable for how long the user can take their turn
 .global Delay
 Delay:
-.byte	50
+.byte	25
 
 //Variables to keep track of the location of the current tetromino block (default to negative spawn space)
 .global First, Second, Third, Fourth, Type, Orientation

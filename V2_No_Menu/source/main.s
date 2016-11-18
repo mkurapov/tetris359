@@ -44,7 +44,7 @@ main:
 .global Quit
 Quit: 
 
-	bl		Clear_Screen
+	//bl		Clear_Screen
 	b		haltLoop$
 
 
