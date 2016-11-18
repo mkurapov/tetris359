@@ -253,6 +253,57 @@ ASCII_To_Address:
 	bx		lr
 
 
+/* Number_To_Bit function
+ *	calculates which bit of a register is the first one set
+ *	r0 - number, as a power of 2 (so only up to one bit is set)
+ *	Returns:
+ *		r0- the index of the bit set
+ */
+.global Number_To_Bit
+Number_To_Bit:
 
+	index	.req r4
+	mask	.req r5
+	bit		.req r6
+
+	push	{r4-r10, r14}
+
+	//set up the loop index
+	mov		index, #0
+	mov		mask, #1
+
+	numberToBitLoop:
+	
+		//check loop guard
+		cmp		index, #32
+		bge		endNumberToBitLoop
+		
+		//get the state of the current bit
+		and		bit, mask, r0
+	
+		//check if the bit is set, and exit if so
+		cmp		bit, #0
+		bne		endNumberToBitLoop
+		
+		//otherwise, increment the index and shift the mask
+		add		index, #1
+		lsl		mask, #1
+		b		numberToBitLoop
+	
+	endNumberToBitLoop:
+	
+	//if not bits were found, return 0
+	cmp		index, #32
+	movge		index, #0
+	
+	//move the index out to the result
+	mov		r0, index
+	
+	.unreq	index
+	.unreq	mask
+	.unreq	bit
+	
+	pop		{r4-r10, r14}
+	bx		lr
 
 .section .data

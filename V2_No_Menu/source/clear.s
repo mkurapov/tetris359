@@ -43,7 +43,7 @@ Clear_Rows:
 		
 		//if the current row does need to be cleared, copy the mask into r0, and clear the row
 		mov		r0, mask
-		lsr		r0, #1
+		bl		Number_To_Bit
 		bl		Clear_Move
 		
 		//clear the top line to remove the duplicate

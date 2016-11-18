@@ -26,8 +26,7 @@ Game_Test:
 
 	push	{r4-r10, r14}
 	
-	bl		Redraw_Board
-	//bl		Check_Rows
+	bl		Redraw_Board	
 	
 	//mov		r0, #0
 	//bl		Clear_Row
@@ -59,10 +58,10 @@ Game_Test:
 			
 			bl		Move_Down
 			
-			cmp		r0, #0
-			//moveq	r4, r0
-			//bleq	Clear_Rows
-			//cmp		r4, #0
+			mov		r4, r0
+			cmp		r4, #0
+			bleq	Clear_Rows
+			cmp		r4, #0
 			beq		testing
 			
 			b		moveIt
@@ -520,7 +519,7 @@ Spawn_Flag:
 //variable for how long the user can take their turn
 .global Delay
 Delay:
-.byte	25
+.byte	100
 
 //Variables to keep track of the location of the current tetromino block (default to negative spawn space)
 .global First, Second, Third, Fourth, Type, Orientation

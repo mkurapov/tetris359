@@ -68,7 +68,7 @@ Spawn_Tetromino:
 	cmp		r4, #6
 	beq		startSpawn
 	
-	bl		spawn_Imp
+										//bl		Spawn_Imp
 
 	startSpawn:
 	
