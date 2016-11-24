@@ -124,7 +124,7 @@ Get_Random_Y:
 	subls	result, #19
 	bls		endGetRandomY
 
-	endGetRandomX:
+	endGetRandomY:
 
 	.unreq	result
 	.unreq	mask
