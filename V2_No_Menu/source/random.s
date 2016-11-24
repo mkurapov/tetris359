@@ -60,12 +60,12 @@ Get_Random_Tetromino:
 	and	result, mask
 
 	cmp		result, #14
-	subls	result, #14
-	bls		endGetRandomTet
+	subge	result, #14
+	bge		endGetRandomTet
 
 	cmp		result, #7
-	subls	result, #7
-	bls		endGetRandomTet
+	subge	result, #7
+	bge		endGetRandomTet
 
 	endGetRandomTet:
 
@@ -101,28 +101,28 @@ Get_Random_Y:
 	and	result, mask
 
 	cmp		result, #114
-	subls	result, #114
-	bls		endGetRandomY
+	subge	result, #114
+	bge		endGetRandomY
 
 	cmp		result, #95
-	subls	result, #95
-	bls		endGetRandomY
+	subge	result, #95
+	bge		endGetRandomY
 
 	cmp		result, #76
-	subls	result, #76
-	bls		endGetRandomY
+	subge	result, #76
+	bge		endGetRandomY
 
 	cmp		result, #57
-	subls	result, #57
-	bls		endGetRandomY
+	subge	result, #57
+	bge		endGetRandomY
 
 	cmp		result, #38
-	subls	result, #38
-	bls		endGetRandomY
+	subge	result, #38
+	bge		endGetRandomY
 
 	cmp		result, #19
-	subls	result, #19
-	bls		endGetRandomY
+	subge	result, #19
+	bge		endGetRandomY
 
 	endGetRandomY:
 
@@ -158,28 +158,28 @@ Get_Random_X:
 	and	result, mask
 
 	cmp		result, #60
-	subls	result, #60
-	bls		endGetRandomX
+	subge	result, #60
+	bge		endGetRandomX
 
 	cmp		result, #50
-	subls	result, #50
-	bls		endGetRandomX
+	subge	result, #50
+	bge		endGetRandomX
 
 	cmp		result, #40
-	subls	result, #40
-	bls		endGetRandomX
+	subge	result, #40
+	bge		endGetRandomX
 
 	cmp		result, #30
-	subls	result, #30
-	bls		endGetRandomX
+	subge	result, #30
+	bge		endGetRandomX
 
 	cmp		result, #20
-	subls	result, #20
-	bls		endGetRandomX
+	subge	result, #20
+	bge		endGetRandomX
 
 	cmp		result, #10
-	subls	result, #10
-	bls		endGetRandomX
+	subge	result, #10
+	bge		endGetRandomX
 
 	endGetRandomX:
 
