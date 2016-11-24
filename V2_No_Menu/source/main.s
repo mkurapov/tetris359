@@ -8,34 +8,47 @@ _start:
 
 main:
 	//initialize peripherals
-    mov     sp, #0x8000
+    bl		Interrupt_Install_Table
+    //mov		sp, #0x8000
 	bl		EnableJTAG
 	bl		InitFrameBuffer
 	bl		Init_SNES
-	
-	mainLoop:
+	//bl		Interrupt_Setup
+	bl		Interuphack
+	bl		Main_Loop
+
+	b haltLoop$
+
+
+
+
+
+ /*Main_Loop function
+ *Main game loop to run the menu and game
+ */
+.global Main_Loop	
+Main_Loop:
 		
-		//display and run the menu
-//***************************************************** UN-COMMENT WHEN MENU IS PLACED BACK
-		//bl		Menu_Display
-		//bl		Menu_Run
+	push	{r4-r10, r14}
+		
+		mainLoopRun:
+			//display and run the menu
+			bl		Menu_Run
     
-		//check if quite game was selected
-		//cmp		r0, #0
-		//bleq	Quit
+			//check if quit game was selected
+			cmp		r0, #0
+			bleq	Quit
 //*****************************************************
 
-		//otherwise, start the game
-		bl		Game_Display
-		bl		Game_Test
-		//bl		Game_Start
+			//otherwise, start the game
+			bl		Game_Test
+			//bl		Game_Start
     
-		//b mainLoop
+			b mainLoopRun
 		
+	pop		{r4-r10, r14}
+	bx		lr
 		
-		
-		
-		b haltLoop$
     
     
 /* Quit function
@@ -44,7 +57,7 @@ main:
 .global Quit
 Quit: 
 
-	//bl		Clear_Screen
+	bl		Clear_Screen
 	b		haltLoop$
 
 

@@ -26,7 +26,7 @@ Clear_Rows:
 	mov		mask,	#1
 	
 	//update the score
-	//bl		Score_Update
+	bl		Score_Update
 	
 	clearRowsLoop:
 	

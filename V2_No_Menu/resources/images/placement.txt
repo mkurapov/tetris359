@@ -1,10 +1,16 @@
 Menu:
-	Main_Start: (304, 501)
-	Main_Quit: (304, 501)
+	Start_Game: (304, 501)
+	Quit_Game: (304, 501)
 	
 	Pause_Menu: (202, 222)
-	Pause_Start: (281, 295)
-	Pause_Quit: (281, 295)
+	Pause_Restart: (237, 316)
+	Pause_Quit: (237, 316)
+	Pause_Clear_Left: (202, 222)
+	Pause_Clear_Right: (704, 222)
 
 Game:
 	Board: (320, 48)
+
+	hundreds: (172, 650) of size (36, 47)
+	tens: (208, 650) of size (36, 47)
+	ones: (244, 650) of size (36, 47)

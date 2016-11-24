@@ -9,9 +9,9 @@ Game_Display:
 
 	push	{r4-r10, r14}
 	
-//***************************************************** REPLACE WITH FULL IMAGE ONCE DONE
-	ldr		r0, =Board
+	ldr		r0, =Game_Screen
 	bl		Draw_Image
+	bl		Score_Draw
 	
 	pop		{r4-r10, r14}
 	bx		lr
@@ -26,25 +26,18 @@ Game_Test:
 
 	push	{r4-r10, r14}
 	
-	bl		Redraw_Board	
+	bl 		Game_Reset
 	
-	//mov		r0, #0
-	//bl		Clear_Row
-	//bl		Redraw_Board
+	bl		Game_Display
+	bl		Toggle_Game_Running_Flag
 	
-	//mov		r0, #0
-	//bl		Clear_Move
-	//bl		Redraw_Board
 	
-	//ldr		r0, =Score
-	//ldrb	r1, [r0]
+	bl		Value_Pack_Spawn
 	
-	//bl			Clear_Rows
-	//bl			Redraw_Board
-	
+	//bl		Value_Pack_Draw
+	//bl		Value_Pack_Clear
 	
 	testing:
-	
 	//test spawning
 	bl		Spawn_Tetromino
 	cmp		r0, #0
@@ -52,8 +45,7 @@ Game_Test:
 	
 		moveIt:
 			ldr		r1, =Delay
-			ldrb	r0, [r1]
-			lsl		r0, #11
+			ldr		r0, [r1]
 			bl		User_Turn
 			
 			bl		Move_Down
@@ -65,6 +57,8 @@ Game_Test:
 			beq		testing
 			
 			b		moveIt
+	
+	endGameTest:
 	
 	pop		{r4-r10, r14}
 	bx		lr
@@ -98,6 +92,7 @@ User_Turn:
 	mov		r0, #1
 	mov		maskLe, #64
 	mov		maskRi, #128
+	mov		maskSt, #8
 
 	//loop until the current time == required time
 	delayLoop:	
@@ -114,6 +109,19 @@ User_Turn:
 		and		r1, maskRi, button 
 		cmp		r1, #0
 		blne	Move_Right
+		
+		//check if start was pressed, and display the pause menu if so
+		and		r1, maskSt, button 
+		cmp		r1, #0
+		blne	Pause_Run
+		
+	
+	//***********************************************
+	//	bl		Interrupt_Reinstall_Table
+	//***********************************************
+		
+		
+		
 		
 		//loop until delay is reached
 		ldr		curTim, [timReg]		
@@ -508,18 +516,121 @@ Check_Empty:
 
 
 
+
+/*Game_Reset function
+ * Restores the game board and local variables to its default state
+ */
+.global Game_Reset
+Game_Reset:
+	index	.req r4
+
+	push	{r4-r10, r14}
+
+	bl		Interrupt_Setup
+
+	//set up the index to clear the game board
+	mov		index, #0
+	
+	clearBoardLoop:
+	
+		//check the loop guard
+		cmp		index, #21
+		bge		endClearBoardLoop
+		
+		//clear the row corresponding to the current index
+		mov		r0, index
+		bl		Clear_Row
+	
+		//increment the index
+		add		index, #1
+		b		clearBoardLoop
+	
+	endClearBoardLoop:
+	
+	//reset the score
+	ldr 	r0, =Score
+	mov		r1, #0
+	strb	r1, [r0]
+	
+	//reset the user turn delay in case the game was quit while a value pack was active
+	ldr		r0, =Delay
+	mov		r1, #100
+	strb	r1, [r0]
+	
+	//reset the default tetromino spawn
+	ldr		r0, =First
+	mov		r1, #4
+	strb	r1, [r0], #1
+	mov		r1, #1
+	strb	r1, [r0], #1
+	mov		r1, #5
+	strb	r1, [r0], #1
+	mov		r1, #1
+	strb	r1, [r0], #1
+	mov		r1, #6
+	strb	r1, [r0], #1
+	mov		r1, #1
+	strb	r1, [r0], #1
+	mov		r1, #7
+	strb	r1, [r0], #1
+	mov		r1, #1
+	strb	r1, [r0]
+	
+	//reset the tetromino type to the default values
+	ldr		r0, =Type
+	mov		r1, #'C'
+	strb	r1, [r0]	
+	
+	//reset the tetromino orientation to the default value
+	ldr		r0, =Orientation
+	mov		r1, #'u'
+	strb	r1, [r0]
+
+	pop		{r4-r10, r14}
+	bx		lr
+
+
+
+/*Toggle_Game_Running_Flag function
+ *	toggles the game running flag between 0 and 1 when the game is paused
+ */
+.global Toggle_Game_Running_Flag
+Toggle_Game_Running_Flag:
+
+	push	{r4-r10, r14}
+
+	//set up possible values for the flag
+	mov		r2, #0
+	mov		r3, #1
+
+	//get the game running flag
+	ldr		r0, =Game_Running_Flag
+	ldr		r1, [r0]
+	
+	//check the contents, and toggle the flag
+	cmp		r1, #0
+	streqb	r3, [r0]
+	strneb	r2, [r0]
+
+	pop		{r4-r10, r14}
+	bx		lr
+
+
+
+
 .section .data
+.align 4
 
+//Variable to determine if the game is running (so value packs are not placed over the menu)
+.global Game_Running_Flag
+Game_Running_Flag:
+.byte	0
 
-//Variable to determine if a new tetromino is needed (set when a tetromino settles)
-.global Spawn_Flag
-Spawn_Flag:
-.byte	1
-
+.align 4
 //variable for how long the user can take their turn
 .global Delay
 Delay:
-.byte	100
+.word	350000
 
 //Variables to keep track of the location of the current tetromino block (default to negative spawn space)
 .global First, Second, Third, Fourth, Type, Orientation
@@ -569,5 +680,5 @@ Virtual_Board:
 .byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
 .byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
 .byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
-.byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
+.byte	'W', 'E', 'E', 'E', 'C', 'C', 'E', 'E', 'E', 'E', 'E', 'W'
 .byte	'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'

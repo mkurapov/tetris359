@@ -17,6 +17,8 @@ Score_Increment:
 	add		score, #1
 	strb	score, [scrAdd]
 	
+	bl		Score_Draw
+	
 	.unreq	scrAdd
 	.unreq	score
 
@@ -82,12 +84,63 @@ Score_Update:
 	add		score, rowCou
 	strb	score, [scrAdd]
 	
+	bl		Score_Draw
+	
 	.unreq	scrAdd
 	.unreq	score
 	.unreq	index
 	.unreq	rowCou
 	.unreq	mask
 	.unreq	row	
+
+	pop		{r4-r10, r14}
+	bx		lr
+
+
+
+
+/*Score_Draw function
+ * draws the score out to the screen
+ */
+.global Score_Draw
+Score_Draw:
+	
+	huns	.req r4
+	tens	.req r5
+	ones	.req r6
+	
+	push	{r4-r10, r14}
+
+	//isolate the digits from the actual score
+	ldr		r0, = Score
+	ldrb	r0, [r0]
+	bl		Isolate_Digits
+	
+	//take a copy of the isolated digits
+	mov		huns, r0
+	mov		tens, r1
+	mov		ones, r2
+	
+	//get address from hundres digit and draw it out
+	bl		Digit_To_Address
+	mov		r1, #0
+	bl		Draw_Digit
+	
+	//get address from tens digit and draw it out
+	mov		r0, tens
+	bl		Digit_To_Address
+	mov		r1, #1
+	bl		Draw_Digit
+	
+	//get address from ones digit and draw it out
+	mov		r0, ones
+	bl		Digit_To_Address
+	mov		r1, #2
+	bl		Draw_Digit
+	
+	.unreq	huns
+	.unreq	tens
+	.unreq	ones
 
 	pop		{r4-r10, r14}
 	bx		lr

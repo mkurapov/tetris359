@@ -13,7 +13,7 @@ Move_Down:
 	xCoord	.req r5
 	yCoord	.req r6
 	index	.req r7
-	true	.req r8
+	result	.req r8
 	flgAdd	.req r9
 	length	.req r10
 
@@ -26,10 +26,6 @@ Move_Down:
 	
 	//get the base address for the coordinates and the virtual board
 	ldr		tetAdd, =First
-
-	//set up variable to set the flag
-	mov		true, #1
-	ldr		flgAdd, = Spawn_Flag
 
 	//set up loop index
 	mov		index, #0
@@ -53,8 +49,8 @@ Move_Down:
 		
 		//if the cell is not clear, set the spawn flag and end
 		cmp		r0, #1
-		strneb	true, [flgAdd]
-		movne	true, #0
+		strneb	result, [flgAdd]
+		movne	result, #0
 		bne		endDownLoop
 		
 		//incerement loop counter
@@ -92,8 +88,15 @@ Move_Down:
 	bl		Set_Tetromino
 	bl		Set_Tet_Screen
 	
+	//increment the score if the block has reached the bottom
+	cmp		result, #0
+	bleq	Score_Increment
+	
+	//check if the tetromino intersects with a value pack
+	bl		Value_Pack_Check
+	
 	//set return value
-	mov		r0, true
+	mov		r0, result
 
 	pop		{r4-r10, r14}
 	bx		lr
@@ -102,7 +105,7 @@ Move_Down:
 	.unreq	xCoord
 	.unreq	yCoord
 	.unreq	index
-	.unreq	true
+	.unreq	result
 	.unreq	flgAdd
 	.unreq	length
 
@@ -191,6 +194,9 @@ Move_Right:
 	//set the tetromino back out to the virtual board
 	bl		Set_Tetromino
 	bl		Set_Tet_Screen
+	
+	//check if the tetromino intersects with a value pack
+	//bl		Value_Pack_Check
 
 	pop		{r4-r10, r14}
 	bx		lr
@@ -286,6 +292,9 @@ Move_Left:
 	//set the tetromino back out to the virtual board
 	bl		Set_Tetromino
 	bl		Set_Tet_Screen
+	
+	//check if the tetromino intersects with a value pack
+	//bl		Value_Pack_Check
 	
 
 	pop		{r4-r10, r14}

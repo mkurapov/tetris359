@@ -41,43 +41,50 @@ Wait:
 	bx		lr							//branch back to the calling subroutine
 
 
-	/* Random_Number_Generator function
-	 * Generates a random number from 0 to 3
-	 * Parameters:
-	 *	None
-	 *Returns:
-	 *	r0 - rand(0,3)
-	 */
-	.global		Random_Number_Generator
-	Random_Number_Generator:
 
-		clock	  		.req r0
-		clockReg		.req r1
-		shiftClock	.req r2
-		mask				.req r3
 
-		push			{r4-r10, r14}				//push registers onto the stack
 
-		//set up loop
-		ldr		clockReg, =0x3F003004			//get the address for the time counter
-		ldr		clock, [clockReg]			//get the base time from the time address
 
-		//lsr		shiftClock, clock, #12
-		eor 	clock, clock, lsr #12
-		eor 	clock, clock, lsl #25
-		eor 	clock, clock, lsr #27
+/* Random_Number_Generator function
+* Generates a random number from 0 to 3
+* Parameters:
+*	None
+*Returns:
+*	r0 - rand(0,3)
+*/
+.global		Random_Number_Generator
+Random_Number_Generator:
 
-		mov		mask, #3
+clock	  		.req r0
+clockReg		.req r1
+shiftClock	.req r2
+mask				.req r3
 
-		and		clock, mask
+push			{r4-r10, r14}				//push registers onto the stack
 
-		.unreq	clockReg
-		.unreq	clock
-		.unreq	shiftClock
-		.unreq	mask
+//set up loop
+ldr		clockReg, =0x3F003004			//get the address for the time counter
+ldr		clock, [clockReg]			//get the base time from the time address
 
-		pop		{r4-r10, r14}				//pop registers off of the stack
-		bx		lr							//branch back to the calling subroutine
+//lsr		shiftClock, clock, #12
+eor 	clock, clock, lsr #12
+eor 	clock, clock, lsl #25
+eor 	clock, clock, lsr #27
+
+
+
+.unreq	clockReg
+.unreq	clock
+.unreq	shiftClock
+.unreq	mask
+
+pop		{r4-r10, r14}				//pop registers off of the stack
+bx		lr							//branch back to the calling subroutine
+
+
+
+
+
 
 /* Get_Random_Tetromino function
  * Generates a random number from 0 to 6
@@ -89,33 +96,39 @@ Wait:
 .global	Get_Random_Tetromino
 Get_Random_Tetromino:
 
-	result	  	.req r4
-	i						.req r5
-	rand				.req r6
+	result	  	.req r0
+	mask				.req r4
+	rand				.req r5
 
 
 	push			{r4-r10, r14}				//push registers onto the stack
 
-	mov	i, #0
+	mov	mask, #15
 
-	getRandomTetLoop:
-			cmp	i, #2
-			beq	endRandomTet
+	bl	Random_Number_Generator
 
-			bl	Random_Number_Generator
-			add	result, r0
+	and	result, mask
 
-			add	i, #1
-			b	getRandomTetLoop
+	cmp	result, #13
+	subhi	result, #9
+	bhi		endGetRandomTet
 
-	endRandomTet:
+	cmp	result, #6
+	subhi	result, #7
+	bhi		endGetRandomTet
 
-	mov	r0, result
+	endGetRandomTet:
 
 	.unreq	result
+	.unreq	mask
+	.unreq	rand
 
 	pop		{r4-r10, r14}				//pop registers off of the stack
 	bx		lr							//branch back to the calling subroutine
+
+
+
+
 
 
 /* Get_Random_Row function
@@ -247,10 +260,79 @@ ASCII_To_Address:
 	cmp		r0, #'R'
 	ldreq	r0, =Red_Block
 	beq		end_ASCII_To_Address
+	
+	cmp		r0, #'F'
+	ldreq	r0, =Value_Pack_Fast
+	beq		end_ASCII_To_Address
+	
+	cmp		r0, #'I'
+	ldreq	r0, =Value_Pack_Invisible
+	beq		end_ASCII_To_Address
 
 	end_ASCII_To_Address:
 	pop		{r4-r10, r14}
 	bx		lr
+	
+	
+	
+/* Digit_To_Address function
+ *	converts an digit to the base address of the associated number
+ *	r0 - digit
+ *	Returns:
+ *		R0- Address of associated number image
+ */
+.global Digit_To_Address
+Digit_To_Address:
+
+	push	{r4-r10, r14}
+
+	//switch type statements to load the corresponding address into r0 and skip other checks
+	cmp		r0, #0
+	ldreq	r0, =Char_0
+	beq		end_Digit_To_Address
+
+	cmp		r0, #1
+	ldreq	r0, =Char_1
+	beq		end_Digit_To_Address
+
+	cmp		r0, #2
+	ldreq	r0, =Char_2
+	beq		end_Digit_To_Address
+
+	cmp		r0, #3
+	ldreq	r0, =Char_3
+	beq		end_Digit_To_Address
+
+	cmp		r0, #4
+	ldreq	r0, =Char_4
+	beq		end_Digit_To_Address
+
+	cmp		r0, #5
+	ldreq	r0, =Char_5
+	beq		end_Digit_To_Address
+
+	cmp		r0, #6
+	ldreq	r0, =Char_6
+	beq		end_Digit_To_Address
+
+	cmp		r0, #7
+	ldreq	r0, =Char_7
+	beq		end_Digit_To_Address
+
+	cmp		r0, #8
+	ldreq	r0, =Char_8
+	beq		end_Digit_To_Address
+	
+	cmp		r0, #9
+	ldreq	r0, =Char_9
+	beq		end_Digit_To_Address
+
+	end_Digit_To_Address:
+	pop		{r4-r10, r14}
+	bx		lr
+	
+	
+	
 
 
 /* Number_To_Bit function
@@ -305,5 +387,65 @@ Number_To_Bit:
 	
 	pop		{r4-r10, r14}
 	bx		lr
+	
+	
+	
+
+/* Isolate_Digits function
+ *	isolates the digit of the hundreds, tens, and ones spot of a number
+ *	r0 - number to be split
+ *	Returns:
+ *		r0 - digit in hundreds spot
+ *		r1 - digit in tens spot
+ *		r2 - digit in ones spot
+ */
+.global Isolate_Digits
+Isolate_Digits:
+
+
+	push	{r4-r10, r14}
+
+	number	.req r4
+	index	.req r5
+
+	//take a copy of the original number and set up the loop index
+	mov		number, r0
+	mov		index, #0
+
+
+	hundredsLoop:	
+	
+		//subtract 100 until number <100 to count how many hundreds compose the number
+		cmp 	number, #100					
+		subhs 	number, #100					
+		addhs	index, #1					
+		bhs 	hundredsLoop	
+	
+	endHundredsLoop:
+	
+	//move the hundreds digit to the return register and reset the index
+	mov		r0, index
+	mov 	index, #0
+	
+	tensLoop:
+	
+		//subtract 10 until number <10 to count how many tens compose the number
+		cmp number, #10	
+		subhs number, #10	
+		addhs index, #1		
+		bhs tensLoop		
+	
+	endTensLoop:
+	
+	//move the tens and ones digits to the return registers
+	mov		r1, index
+	mov		r2, number 
+	
+	.unreq	number
+	.unreq	index
+		
+	pop		{r4-r10, r14}
+	bx		lr
+	
 
 .section .data

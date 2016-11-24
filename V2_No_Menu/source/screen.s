@@ -1,6 +1,9 @@
 .section .text
 
 
+.equ score_Y_Offset, 650
+
+
 /* Draw_Pixel function from tutorial exercise
  *	Draws one pixel to the screen
  *  r0 - x-coordinate
@@ -326,6 +329,95 @@ Draw_Block:
 
 	pop		{r4-r10, r14}
 	bx		lr
+
+
+/* Draw_Digit function
+ *	Draws a digit to the screen using the score offset
+ *  r0 - memory address of image to be drawn
+ *	r1 - x coordinate (in terms of score)
+ */
+.global Draw_Digit
+Draw_Digit:
+
+	imgAdd	.req r4
+	xCoord	.req r5
+	yCoord	.req r6
+	length	.req r7
+	height  .req r8
+	outInd	.req r9
+	innInd	.req r10
+	
+	push	{r4-r10, r14}
+
+	//copy the image address
+	mov		imgAdd, r0
+
+	//set up the length of the image
+	mov		length, #36
+	mov		height, #47
+
+	//get actual screen position from score offset
+	mov		xCoord, r1
+	mul		xCoord, length
+	mov		r1, #172 
+	add		xCoord, r1
+	
+	//repeat for the y value
+	ldr		yCoord, =score_Y_Offset
+	
+
+	//set up outer loop
+	mov		outInd, #0
+	
+	outerDigitLoop:
+	
+		//check loop guard
+		cmp		outInd, height
+		bhs		endOuterDigitLoop
+	
+		//set up inner loop
+		mov		innInd, #0
+	
+		innerDigitLoop:
+		
+			//check loop guard
+			cmp		innInd, length
+			bhs		endInnerDigitLoop
+		
+		
+			//call Draw_Pixel with the current x-value
+			mov		r0, xCoord
+			mov		r1, yCoord
+			ldrh	r2, [imgAdd], #2
+			bl		Draw_Pixel
+			
+			//increment index
+			add		innInd, #1
+			add		xCoord, #1
+			b		innerDigitLoop
+		
+		
+		endInnerDigitLoop:
+		
+		//increment index
+		add		outInd, #1
+		add		yCoord, #1
+		sub		xCoord, length
+		b		outerDigitLoop
+	
+	endOuterDigitLoop:
+	
+	.unreq	imgAdd
+	.unreq	xCoord
+	.unreq	yCoord
+	.unreq	length
+	.unreq	height
+	.unreq	outInd
+	.unreq	innInd
+
+	pop		{r4-r10, r14}
+	bx		lr
+
 
 
 
