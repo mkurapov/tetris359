@@ -17,7 +17,7 @@ main:
 	bl		Interuphack
 	bl		Main_Loop
 
-	b haltLoop$
+	//bl		Main_Loop
 
 
 
@@ -30,6 +30,8 @@ main:
 Main_Loop:
 		
 	push	{r4-r10, r14}
+		
+		bl		Clear_Screen
 		
 		mainLoopRun:
 			//display and run the menu

@@ -1,7 +1,7 @@
 .section	.text
 
 
-.equ		interrupt_Delay, 10000000
+.equ		interrupt_Delay, 20000000
 
 .global Interuphack
 Interuphack:
@@ -150,18 +150,13 @@ irq:
 	//tst		r1, #2
 	beq		irqEnd
 
+	//if the game is paused or in the main menu, do not spawn a value pack
+	ldr		r0, =Game_Running_Flag
+	ldrb	r1, [r0]
+	cmp		r1, #0
+	//beq		irqEnd
 	
-	mov		r0, #'C'
-	bl		ASCII_To_Address
-	mov		r1, #2
-	mov		r2, #2
-	bl		Draw_Block
-	
-	//bl		Value_Pack_Spawn
-
-	//update C1 for the next value pack in 20 seconds
-	//bl		Interrupt_Update_Time
-	
+	bl		Value_Pack_Spawn
 	
 	irqEnd:
 	
@@ -172,14 +167,14 @@ irq:
 	str		r1, [r0]
 	
 	// enable C1 IRQ lines on Interrupt Controller
-	ldr		r0, =0x3F00B210
-	mov		r1, #2 					//second bit set
-	str		r1, [r0]
+	//ldr		r0, =0x3F00B210
+	//mov		r1, #2 					//second bit set
+	//str		r1, [r0]
 	
 	// disable all other IRQ lines on Interrupt Controller
-	ldr		r0, =0x3F00B214
-	mov		r1, #0
-	str		r1, [r0]
+	//ldr		r0, =0x3F00B214
+	//mov		r1, #0
+	//str		r1, [r0]
 	
 	//bl		Interrupt_Reinstall_Table
 	bl			Interrupt_Setup

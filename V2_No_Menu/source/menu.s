@@ -35,6 +35,7 @@ Menu_Run:
 
 	push	{r4-r10, r14}
 	
+	bl		Clear_Game_Running_Flag
 	bl		Menu_Display
 
 	//set the default selected option to 1
@@ -123,7 +124,7 @@ Pause_Run:
 	push	{r4-r10, r14}
 	
 	bl		Pause_Display
-	bl		Toggle_Game_Running_Flag
+	bl		Clear_Game_Running_Flag
 
 	//set the default selected option to 1
 	mov		select, #1
@@ -187,7 +188,8 @@ Pause_Run:
 	
 	endPause:
 	
-	bl		Toggle_Game_Running_Flag
+	bl		Set_Game_Running_Flag
+	bl		Value_Pack_Draw
 
 	.unreq	maskA
 	.unreq	maskUp

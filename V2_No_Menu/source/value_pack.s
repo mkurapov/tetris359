@@ -23,10 +23,10 @@ Value_Pack_Spawn:
 		bl	 	Get_Random_Y
 		add		r0, #2		//add 2 to ignore the spawn area
 		mov	 	yCoord, r0
-		mov		r1, r0
 		bl		Get_Random_X
 		add		r0, #1		//add 1 to ignore the left wall
 		mov		xCoord, r0
+		mov		r1, yCoord
 
 		//call check empty, and return if a full block was found
 		bl 		Check_Empty
@@ -39,16 +39,16 @@ Value_Pack_Spawn:
 	strb 	yCoord, [vpAddr]
 	
 	//get a value pack type from the random number generator
-	bl		Get_Random_Tetromino
+	//bl		Get_Random_Tetromino
 	
 	//set up the possible types of the vp
 	ldr		vpAddr, =Value_Pack_Type
 	mov		r2, #'F'
-	mov		r3, #'I'
+	//mov		r3, #'I'
 
 	//take the first bit of the random number, and set the type based on the result
-	and		r0, #1
-	cmp		r0, #0
+	//and		r0, #1
+	//cmp		r0, #0
 	strb	r2, [vpAddr]
 	//strneb	r3, [vpAddr]
 	
@@ -76,7 +76,7 @@ Value_Pack_Clear:
 	vpAddr	.req r4
 	coord	.req r5
 	
-	push	{r4-r10, r14}
+	push	{r0-r10, r14}
 	
 	//draw an empty block over the value pack
 	ldr		vpAddr, =Value_Pack
@@ -85,6 +85,8 @@ Value_Pack_Clear:
 	ldrb	r1, [vpAddr], #1
 	ldrb	r2, [vpAddr]
 	bl		Draw_Block
+	
+	breakHere:
 	
 	//set the value pack coords to its default value
 	ldr		vpAddr, =Value_Pack
@@ -98,7 +100,7 @@ Value_Pack_Clear:
 	.unreq	vpAddr
 	.unreq	coord
 	
-	pop		{r4-r10, r14}
+	pop		{r0-r10, r14}
 	bx		lr
 	
 	
@@ -244,6 +246,9 @@ Value_Pack_Check:
 Value_Pack_Effect:
 
 	push	{r4-r10, r14}
+	
+	//increment the score
+	bl		Score_Increment
 
 	//get the type of the current value pack
 	ldr		r0, =Value_Pack_Type
@@ -279,6 +284,8 @@ Value_Pack_Effect:
 
 	pop		{r4-r10, r14}
 	bx		lr
+
+
 
 
 /*Value_Pack_Decrement function

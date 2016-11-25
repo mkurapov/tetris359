@@ -92,9 +92,6 @@ Move_Down:
 	cmp		result, #0
 	bleq	Score_Increment
 	
-	//check if the tetromino intersects with a value pack
-	bl		Value_Pack_Check
-	
 	//set return value
 	mov		r0, result
 

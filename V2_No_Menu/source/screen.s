@@ -251,11 +251,11 @@ Draw_Block:
 	outInd	.req r9
 	innInd	.req r10
 	
+	push	{r4-r10, r14}
+
 	//check that y value is within displayed game board
 	cmp		r2, #1
 	ble		endOuterBlockLoop
-	
-	push	{r4-r10, r14}
 
 	//copy the image address
 	mov		imgAdd, r0

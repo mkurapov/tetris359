@@ -265,8 +265,8 @@ rotateLRightDown:
 
 	//yCoord
 	ldrb	yCoord, [coords], #1
-	addne xCoord, #1
-	subeq	xCoord, #1
+	addne 	yCoord, #1
+	subeq	yCoord, #1
 
 	mov	r0, xCoord
 	mov	r1, yCoord
@@ -625,8 +625,8 @@ rotateLLeftUp:
 
 	//yCoord
 	ldrb	yCoord, [coords], #1
-	addeq	xCoord, #1
-	subne	xCoord, #1
+	addeq	yCoord, #1
+	subne	yCoord, #1
 
 	mov	r0, xCoord
 	mov	r1, yCoord

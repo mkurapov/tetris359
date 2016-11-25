@@ -363,19 +363,19 @@ Spawn_L:
 	ldr		coord, =First
 		
 	//set up first
-	mov		value, #4
+	mov		value, #6
 	strb	value, [coord], #1
-	mov		value, #1
+	mov		value, #0
 	strb	value, [coord], #1
 	
 	//set up second
-	mov		value, #5
+	mov		value, #4
 	strb	value, [coord], #1
 	mov		value, #1
 	strb	value, [coord], #1
 		
 	//set up third
-	mov		value, #6
+	mov		value, #5
 	strb	value, [coord], #1
 	mov		value, #1
 	strb	value, [coord], #1
@@ -383,7 +383,7 @@ Spawn_L:
 	//set up fourth
 	mov		value, #6
 	strb	value, [coord], #1
-	mov		value, #0
+	mov		value, #1
 	strb	value, [coord], #1
 	
 	//set the type of the tetromino
@@ -520,25 +520,25 @@ Spawn_T:
 	ldr		coord, =First
 		
 	//set up first
-	mov		value, #4
+	mov		value, #5
 	strb	value, [coord], #1
 	mov		value, #0
 	strb	value, [coord], #1
 	
 	//set up second
-	mov		value, #5
+	mov		value, #4
 	strb	value, [coord], #1
-	mov		value, #0
+	mov		value, #1
 	strb	value, [coord], #1
 		
 	//set up third
-	mov		value, #6
+	mov		value, #5
 	strb	value, [coord], #1
-	mov		value, #0
+	mov		value, #1
 	strb	value, [coord], #1
 		
 	//set up fourth
-	mov		value, #5
+	mov		value, #6
 	strb	value, [coord], #1
 	mov		value, #1
 	strb	value, [coord], #1

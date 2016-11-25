@@ -64,6 +64,9 @@ Clear_Rows:
 	//print the changes out to the screen
 	bl		Redraw_Board
 	
+	//print the value pack bakc out to the screen
+	bl		Value_Pack_Draw
+	
 	endClearRows:
 
 	.unreq	encode

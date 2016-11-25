@@ -29,10 +29,8 @@ Game_Test:
 	bl 		Game_Reset
 
 	bl		Game_Display
-	bl		Toggle_Game_Running_Flag
 
-
-	bl		Value_Pack_Spawn
+	//bl		Value_Pack_Spawn
 
 	//bl		Value_Pack_Draw
 	//bl		Value_Pack_Clear
@@ -49,12 +47,17 @@ Game_Test:
 			bl		User_Turn
 
 			bl		Move_Down
-
 			mov		r4, r0
+			
+			//check if the tetromino intersects with a value pack
+			bl		Value_Pack_Check
+
 			cmp		r4, #0
 			bleq	Clear_Rows
 			cmp		r4, #0
 			beq		testing
+
+			bl		Set_Game_Running_Flag
 
 			b		moveIt
 
@@ -70,7 +73,7 @@ Game_Test:
  */
 User_Turn:
 
-	button	.req r0
+	button	.req r10
 	basTim	.req r1
 	curTim	.req r2
 	timReg	.req r4
@@ -79,7 +82,7 @@ User_Turn:
 	maskRi	.req r7
 	maskUp	.req r8
 	maskDo	.req r9
-	maskSt	.req r10
+	maskSt	.req r0
 
 	push	{r4-r10, r14}
 
@@ -92,8 +95,8 @@ User_Turn:
 	mov		r0, #1
 
 	mov		maskSt, #8
-	mov		maskUp, #16
-	mov		maskDo, #32
+	mov		maskUp, #256
+	mov		maskDo, #1
 	mov		maskLe, #64
 	mov		maskRi, #128
 
@@ -103,6 +106,7 @@ User_Turn:
 
 		//read in the SNES input
 		bl		Get_SNES
+		mov		button, r0
 
 		//check if left was pressed, and attempt move
 		and		r1, maskLe, button
@@ -114,30 +118,27 @@ User_Turn:
 		cmp		r1, #0
 		blne	Move_Right
 
-		//check if right was pressed, and attempt move
+		//check if up was pressed, and attempt move
 		and		r1, maskUp, button
 		cmp		r1, #0
 		movne	r0, #0
 		blne	Rotate_Tet
 
-		//check if right was pressed, and attempt move
+		//check if down was pressed, and attempt move
 		and		r1, maskDo, button
 		cmp		r1, #0
 		movne	r0, #1
 		blne	Rotate_Tet
-
+		
+		//mov		maskSt, #8
+		
 		//check if start was pressed, and display the pause menu if so
 		and		r1, maskSt, button
 		cmp		r1, #0
 		blne	Pause_Run
 
-
-	//***********************************************
-	//	bl		Interrupt_Reinstall_Table
-	//***********************************************
-
-
-
+		//check if the tetromino intersects with a value pack
+		bl		Value_Pack_Check
 
 		//loop until delay is reached
 		ldr		curTim, [timReg]
@@ -601,35 +602,59 @@ Game_Reset:
 	ldr		r0, =Orientation
 	mov		r1, #'u'
 	strb	r1, [r0]
+	
+	//reset the value pack location
+	bl		Value_Pack_Reset
 
 	pop		{r4-r10, r14}
 	bx		lr
 
 
 
-/*Toggle_Game_Running_Flag function
+/*Set_Game_Running_Flag function
  *	toggles the game running flag between 0 and 1 when the game is paused
  */
-.global Toggle_Game_Running_Flag
-Toggle_Game_Running_Flag:
+.global Set_Game_Running_Flag
+Set_Game_Running_Flag:
+
+	push	{r4-r10, r14}
+
+	//set up possible values for the flag
+	mov		r2, #1
+
+	//get the game running flag
+	ldr		r0, =Game_Running_Flag
+	
+	//check the contents, and toggle the flag
+	strb	r2, [r0]
+
+	pop		{r4-r10, r14}
+	bx		lr
+
+
+
+/*Clear_Game_Running_Flag function
+ *	toggles the game running flag between 0 and 1 when the game is paused
+ */
+.global Clear_Game_Running_Flag
+Clear_Game_Running_Flag:
 
 	push	{r4-r10, r14}
 
 	//set up possible values for the flag
 	mov		r2, #0
-	mov		r3, #1
 
 	//get the game running flag
 	ldr		r0, =Game_Running_Flag
-	ldr		r1, [r0]
-
+	
 	//check the contents, and toggle the flag
-	cmp		r1, #0
-	streqb	r3, [r0]
-	strneb	r2, [r0]
+	strb	r2, [r0]
 
 	pop		{r4-r10, r14}
 	bx		lr
+
+
+
 
 
 
@@ -696,5 +721,5 @@ Virtual_Board:
 .byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
 .byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
 .byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
-.byte	'W', 'E', 'E', 'E', 'C', 'C', 'E', 'E', 'E', 'E', 'E', 'W'
+.byte	'W', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'W'
 .byte	'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'
