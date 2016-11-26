@@ -154,7 +154,7 @@ irq:
 	ldr		r0, =Game_Running_Flag
 	ldrb	r1, [r0]
 	cmp		r1, #0
-	//beq		irqEnd
+	beq		irqEnd
 	
 	bl		Value_Pack_Spawn
 	

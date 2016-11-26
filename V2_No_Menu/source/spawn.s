@@ -34,14 +34,9 @@ Spawn_Tetromino:
 
 	//switch statement to branch to each case to initialize tetromino in spawn area
 	cmp		r4, #0
-	bllt	Spawn_Imp_Lo
+	blle	Spawn_I
 	cmp		r4, #0
-	blt		startSpawn
-	
-	cmp		r4, #0
-	bleq	Spawn_I
-	cmp		r4, #0
-	beq		startSpawn
+	ble		startSpawn
 
 	cmp		r4, #1
 	bleq	Spawn_J
@@ -69,13 +64,8 @@ Spawn_Tetromino:
 	beq		startSpawn
 
 	cmp		r4, #6
-	bleq	Spawn_Z
+	blge	Spawn_Z
 	cmp		r4, #6
-	beq		startSpawn
-
-	cmp		r4, #7
-	blge	Spawn_Imp_Hi
-	cmp		r4, #7
 	bge		startSpawn
 
 	startSpawn:
@@ -129,116 +119,8 @@ Spawn_Tetromino:
 	
 	pop		{r4-r10, r14}
 	bx		lr
-
-/* Spawn_Imp function
- *  spawns an impossible shape for testing
- */
-Spawn_Imp_Hi:
-
-	coord	.req r4
-	value	.req r5
-	typAdd	.req r6
-	type	.req r7
-
-	push	{r4-r10, r14}
-
-	ldr		coord, =First
-		
-	//set up first
-	mov		value, #4
-	strb	value, [coord], #1
-	mov		value, #1
-	strb	value, [coord], #1
 	
-	//set up second
-	mov		value, #5
-	strb	value, [coord], #1
-	mov		value, #1
-	strb	value, [coord], #1
-		
-	//set up third
-	mov		value, #6
-	strb	value, [coord], #1
-	mov		value, #0
-	strb	value, [coord], #1
-		
-	//set up fourth
-	mov		value, #7
-	strb	value, [coord], #1
-	mov		value, #0
-	strb	value, [coord], #1
 	
-	//set the type of the tetromino
-	ldr		typAdd, =Type
-	mov		type, #'R'
-	strb	type, [typAdd]
-
-	.unreq	coord
-	.unreq	value
-	.unreq	typAdd
-	.unreq	type
-
-	pop		{r4-r10, r14}
-	bx		lr
-
-
-
-
-/* Spawn_Imp function
- *  spawns an impossible shape for testing
- */
-Spawn_Imp_Lo:
-
-	coord	.req r4
-	value	.req r5
-	typAdd	.req r6
-	type	.req r7
-
-	push	{r4-r10, r14}
-
-	ldr		coord, =First
-		
-	//set up first
-	mov		value, #4
-	strb	value, [coord], #1
-	mov		value, #1
-	strb	value, [coord], #1
-	
-	//set up second
-	mov		value, #5
-	strb	value, [coord], #1
-	mov		value, #1
-	strb	value, [coord], #1
-		
-	//set up third
-	mov		value, #6
-	strb	value, [coord], #1
-	mov		value, #0
-	strb	value, [coord], #1
-		
-	//set up fourth
-	mov		value, #7
-	strb	value, [coord], #1
-	mov		value, #0
-	strb	value, [coord], #1
-	
-	//set the type of the tetromino
-	ldr		typAdd, =Type
-	mov		type, #'C'
-	strb	type, [typAdd]
-
-	.unreq	coord
-	.unreq	value
-	.unreq	typAdd
-	.unreq	type
-
-	pop		{r4-r10, r14}
-	bx		lr
-
-
-
-
-
 
 
 

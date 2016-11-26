@@ -180,7 +180,7 @@ Pause_Run:
 	cmp		select, #1
 	bleq	Game_Reset
 	cmp		select, #1
-	bleq	Game_Test 						//Game_Run once done
+	bleq	Game_Start
 	
 	//otherwise, return to main menu (restart above should fall through to this function call if it somehow returns)
 	bl	Game_Reset

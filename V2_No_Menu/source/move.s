@@ -303,13 +303,4 @@ Move_Left:
 	.unreq	index
 	.unreq	length
 
-
-
-
-
-
-
-
-
-
 .section .data

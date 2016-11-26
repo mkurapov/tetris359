@@ -18,53 +18,72 @@ Game_Display:
 
 
 
-/* Game_Test function
- *	global function to test implementation of individual functions within the game package
+/* Game_Start function
+ *	main game loop function
  */
-.global	Game_Test
-Game_Test:
+.global	Game_Start
+Game_Start:
 
 	push	{r4-r10, r14}
 
+	//reset the game, display it, and set the flag for interupts
 	bl 		Game_Reset
-
 	bl		Game_Display
+	bl		Set_Game_Running_Flag
 
-	//bl		Value_Pack_Spawn
+	//main loop for spawning tetrominos and allowing for the user turn
+	gameRunLoop:
+	
+		//attempt to spawn a tetromino
+		bl		Spawn_Tetromino
+		mov		r4, r0
+		
+		//check if there was no room to spawn, and if so, quit the game
+		cmp		r4, #0
+		bleq	Game_Lost
+		cmp		r4, #0
+		beq		endGame
 
-	//bl		Value_Pack_Draw
-	//bl		Value_Pack_Clear
-
-	testing:
-	//test spawning
-	bl		Spawn_Tetromino
-	cmp		r0, #0
-	bleq	Quit
-
+		//move the block down and let the player control it
 		moveIt:
+		
+			//get the current user turn delay, and call user turn
 			ldr		r1, =Delay
 			ldr		r0, [r1]
 			bl		User_Turn
 
+			//move the block down by 1
 			bl		Move_Down
 			mov		r4, r0
 			
 			//check if the tetromino intersects with a value pack
 			bl		Value_Pack_Check
 
+			//check if the block has reached the bottom, clear lines if so
 			cmp		r4, #0
 			bleq	Clear_Rows
+			
+			//check to see if the previous actions caused a win, and end the game if so
+			bl		Check_Win
+			mov		r5, r0
+			cmp		r5, #1
+			bleq	Game_Won
+			cmp		r5, #1
+			beq		endGame
+			
+			//otherwise, branch back to spawn a new tetromino if the last reached the bottom
 			cmp		r4, #0
-			beq		testing
+			beq		gameRunLoop
 
-			bl		Set_Game_Running_Flag
-
+			//if a new block was not spawned, continue moving the block down
 			b		moveIt
 
-	endGameTest:
+	endGame:
 
 	pop		{r4-r10, r14}
 	bx		lr
+
+
 
 
 /*User_Turn function
@@ -95,8 +114,8 @@ User_Turn:
 	mov		r0, #1
 
 	mov		maskSt, #8
-	mov		maskUp, #256
-	mov		maskDo, #1
+	mov		maskUp, #16		//256 for a button
+	mov		maskDo, #32		//1 for b button
 	mov		maskLe, #64
 	mov		maskRi, #128
 
@@ -130,7 +149,7 @@ User_Turn:
 		movne	r0, #1
 		blne	Rotate_Tet
 		
-		//mov		maskSt, #8
+		mov		maskSt, #8
 		
 		//check if start was pressed, and display the pause menu if so
 		and		r1, maskSt, button
@@ -164,6 +183,91 @@ User_Turn:
 
 
 
+
+
+
+/*Check_Win function
+ *	checks to see if te score is >=150
+ *	returns:
+ *		r0 - 1 if the game is won, 0 otherwise
+ */
+.global Check_Win
+Check_Win:
+
+	push	{r4-r10, r14}
+
+	//check for a win condition
+	ldr		r0, =Score
+	ldrb	r1, [r0]
+	cmp		r1, #150
+	
+	//set the return value
+	movge	r0, #1
+	movlt	r0, #0
+
+	pop		{r4-r10, r14}			
+	bx		lr	
+
+
+
+/*Game_Won function
+ *prints a game won message and waits for user input to return
+ */
+.global Game_Won
+Game_Won:
+
+	push	{r4-r10, r14}
+
+	//clear the game running flag
+	bl		Clear_Game_Running_Flag
+	
+	//display the game won screen
+	ldr		r0, =Game_Won_Image
+	bl		Draw_Image
+	
+	//loop until the user presses a button
+	
+	waitForInputWon:
+	
+		//read in the SNES input
+		bl		Get_SNES
+		cmp		r0, #0
+		beq		waitForInputWon
+
+	pop		{r4-r10, r14}			
+	bx		lr
+
+
+
+
+
+
+/*Game_Lost function
+ *prints a game won message and waits for user input to return
+ */
+.global Game_Lost
+Game_Lost:
+
+	push	{r4-r10, r14}
+
+	//clear the game running flag
+	bl		Clear_Game_Running_Flag
+	
+	//display the game lost screen
+	ldr		r0, =Game_Lost_Image
+	bl		Draw_Image
+	
+	//loop until the user presses a button
+	
+	waitForInputLost:
+	
+		//read in the SNES input
+		bl		Get_SNES
+		cmp		r0, #0
+		beq		waitForInputLost
+
+	pop		{r4-r10, r14}			
+	bx		lr
 
 
 
@@ -605,6 +709,11 @@ Game_Reset:
 	
 	//reset the value pack location
 	bl		Value_Pack_Reset
+	
+	//reset the vaue pack time to 0
+	ldr		r0, =Value_Pack_Time
+	mov		r1, #1
+	strb	r1, [r0]
 
 	pop		{r4-r10, r14}
 	bx		lr
@@ -612,20 +721,15 @@ Game_Reset:
 
 
 /*Set_Game_Running_Flag function
- *	toggles the game running flag between 0 and 1 when the game is paused
+ *	sets the game running flag to 1 
  */
 .global Set_Game_Running_Flag
 Set_Game_Running_Flag:
 
 	push	{r4-r10, r14}
 
-	//set up possible values for the flag
-	mov		r2, #1
-
-	//get the game running flag
 	ldr		r0, =Game_Running_Flag
-	
-	//check the contents, and toggle the flag
+	mov		r2, #1
 	strb	r2, [r0]
 
 	pop		{r4-r10, r14}
@@ -634,26 +738,19 @@ Set_Game_Running_Flag:
 
 
 /*Clear_Game_Running_Flag function
- *	toggles the game running flag between 0 and 1 when the game is paused
+ *	clears the game running flag 
  */
 .global Clear_Game_Running_Flag
 Clear_Game_Running_Flag:
 
 	push	{r4-r10, r14}
 
-	//set up possible values for the flag
-	mov		r2, #0
-
-	//get the game running flag
 	ldr		r0, =Game_Running_Flag
-	
-	//check the contents, and toggle the flag
+	mov		r2, #0
 	strb	r2, [r0]
 
 	pop		{r4-r10, r14}
 	bx		lr
-
-
 
 
 

@@ -86,8 +86,6 @@ Value_Pack_Clear:
 	ldrb	r2, [vpAddr]
 	bl		Draw_Block
 	
-	breakHere:
-	
 	//set the value pack coords to its default value
 	ldr		vpAddr, =Value_Pack
 	mov		coord, #1

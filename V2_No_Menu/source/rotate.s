@@ -45,15 +45,6 @@ Rotate_Tet:
 
 
 
-
-
-
-
-
-
-
-
-
 	endRotation:
 
 	//set the tetromino back out to the virtual board
